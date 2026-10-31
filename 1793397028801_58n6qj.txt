@@ -1,0 +1,1 @@
+agent deployment: https://log-anomaly-detector-15ei.arcada.app
