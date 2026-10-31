@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './AuthContext'
 import Navbar from './components/Navbar'
 import BusinessSection from './components/BusinessSection'
+import SmoothScroll from './components/SmoothScroll'
 import { FinalCta, Footer, Hero, HowItWorks, NotDoing, Principles, Problem, WhyItMatters } from './components/Sections'
 import LoginPage from './LoginPage'
 import DashboardPage from './DashboardPage'
@@ -55,6 +56,7 @@ function Landing() {
 export default function App() {
   return (
     <AuthProvider>
+      <SmoothScroll />
       <Suspense fallback={null}>
         <ParticleBackground />
       </Suspense>
