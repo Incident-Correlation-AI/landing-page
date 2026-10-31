@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { useAuth } from '../AuthContext'
 
 const links = [
   { href: '#problem', label: 'problem' },
@@ -10,6 +11,8 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const { user, dashboardUrl, logout } = useAuth()
+
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
@@ -36,12 +39,30 @@ export default function Navbar() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <Link
-            to="/login"
-            className="inline-flex h-10 items-center justify-center border border-accent bg-accent px-5 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
-          >
-            [ log in ]
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <a
+                href={dashboardUrl}
+                className="inline-flex h-10 items-center justify-center border border-accent bg-accent px-5 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
+              >
+                [ dashboard ]
+              </a>
+              <button
+                type="button"
+                onClick={() => logout()}
+                className="inline-flex h-10 items-center justify-center border border-dim px-4 font-mono text-sm font-medium text-dim transition-colors duration-150 hover:border-accent hover:text-accent"
+              >
+                [ log out ]
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="inline-flex h-10 items-center justify-center border border-accent bg-accent px-5 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
+            >
+              [ log in ]
+            </Link>
+          )}
           <button
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center border border-dim text-ink md:hidden"
@@ -55,14 +76,41 @@ export default function Navbar() {
         </div>
       </div>
       <nav id="nav-menu" aria-label="Page" className={`${open ? 'block' : 'hidden'} border-t border-dim bg-bg md:hidden`}>
-        <ul className="mx-auto flex max-w-6xl flex-col px-5 py-3">
+        <ul className="mx-auto flex max-w-6xl flex-col px-5 py-3 font-mono">
           {links.map((l) => (
             <li key={l.href}>
-              <a href={l.href} className="block py-3 font-mono text-base text-dim hover:text-ink" onClick={() => setOpen(false)}>
+              <a href={l.href} className="block py-3 text-base text-dim hover:text-ink" onClick={() => setOpen(false)}>
                 [{l.label}]
               </a>
             </li>
           ))}
+          {user ? (
+            <>
+              <li>
+                <a href={dashboardUrl} className="block py-3 text-base text-accent" onClick={() => setOpen(false)}>
+                  [ dashboard ]
+                </a>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout()
+                    setOpen(false)
+                  }}
+                  className="block py-3 text-base text-dim hover:text-accent"
+                >
+                  [ log out ]
+                </button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to="/login" className="block py-3 text-base text-accent" onClick={() => setOpen(false)}>
+                [ log in ]
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useAuth } from '../AuthContext'
 import Reveal from './Reveal'
 
 /* ------------------------------------------------------------------ typing effect (hero only) */
@@ -30,6 +31,7 @@ function TypedCommand({ text, onDone }: { text: string; onDone: () => void }) {
 
 export function Hero() {
   const [typed, setTyped] = useState(false)
+  const { user, dashboardUrl } = useAuth()
 
   return (
     <section className="px-5 pt-12 pb-16 md:pt-20 md:pb-24">
@@ -46,12 +48,21 @@ export function Hero() {
               # a read-only pipeline from host logs to an incident you can check
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <Link
-                to="/login"
-                className="inline-flex h-12 items-center justify-center border border-accent bg-accent px-6 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
-              >
-                [ log in ]
-              </Link>
+              {user ? (
+                <a
+                  href={dashboardUrl}
+                  className="inline-flex h-12 items-center justify-center border border-accent bg-accent px-6 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
+                >
+                  [ dashboard ]
+                </a>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex h-12 items-center justify-center border border-accent bg-accent px-6 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
+                >
+                  [ log in ]
+                </Link>
+              )}
               <a
                 href="#how"
                 className="inline-flex h-12 items-center justify-center border border-dim px-6 font-mono text-base text-ink transition-colors duration-150 hover:text-accent"
@@ -209,20 +220,33 @@ export function NotDoing() {
 /* ------------------------------------------------------------------ final cta */
 
 export function FinalCta() {
+  const { user, dashboardUrl } = useAuth()
+
   return (
     <section className="px-5 py-16 md:py-24">
       <Rule />
       <div className="mx-auto max-w-6xl mt-16 md:mt-24 flex justify-end">
         <Reveal className="text-right">
           <p className="font-mono text-xl text-accent sm:text-2xl">$ lad --start</p>
-          <p className="mt-4 font-mono text-2xl font-medium text-ink sm:text-3xl">Ready to see an incident?</p>
+          <p className="mt-4 font-mono text-2xl font-medium text-ink sm:text-3xl">
+            {user ? 'Session active: ready to inspect.' : 'Ready to see an incident?'}
+          </p>
           <div className="mt-8 flex justify-end">
-            <Link
-              to="/login"
-              className="inline-flex h-12 items-center justify-center border border-accent bg-accent px-6 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
-            >
-              [ log in ]
-            </Link>
+            {user ? (
+              <a
+                href={dashboardUrl}
+                className="inline-flex h-12 items-center justify-center border border-accent bg-accent px-6 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
+              >
+                [ dashboard ]
+              </a>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex h-12 items-center justify-center border border-accent bg-accent px-6 font-mono text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
+              >
+                [ log in ]
+              </Link>
+            )}
           </div>
         </Reveal>
       </div>

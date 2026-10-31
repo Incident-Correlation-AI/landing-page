@@ -1,12 +1,13 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { AuthProvider } from './AuthContext'
 import Navbar from './components/Navbar'
 import { FinalCta, Footer, Hero, HowItWorks, NotDoing, Principles, Problem, WhyItMatters } from './components/Sections'
+import LoginPage from './LoginPage'
+import DashboardPage from './DashboardPage'
 import ReservedRoute from './ReservedRoute'
 
 const ParticleBackground = lazy(() => import('./components/ParticleBackground'))
-
-const API = { login: '/api/auth/login', me: '/api/auth/me' }
 
 function WindowChrome() {
   return (
@@ -51,22 +52,16 @@ function Landing() {
 
 export default function App() {
   return (
-    <>
+    <AuthProvider>
       <Suspense fallback={null}>
         <ParticleBackground />
       </Suspense>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route
-          path="/login"
-          element={<ReservedRoute title="Log in" note={`This route is reserved. The login page is not built yet. It will submit to ${API.login}.`} />}
-        />
-        <Route
-          path="/dashboard"
-          element={<ReservedRoute title="Dashboard" note={`This route is reserved for a guarded dashboard. Access will depend on ${API.me}. No auth check is wired yet.`} />}
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="*" element={<ReservedRoute title="Page not found" note="This address is not part of the site." />} />
       </Routes>
-    </>
+    </AuthProvider>
   )
 }
