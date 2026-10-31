@@ -1,4 +1,4 @@
-const AUTH_BASE_URL = '';
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || '';
 const TOKEN_KEY = 'lad_token';
 
 export interface User {
@@ -34,8 +34,11 @@ export function setStoredToken(token: string | null): void {
 
 export function getDashboardUrl(token?: string | null): string {
   const t = token ?? getStoredToken();
-  if (!t) return 'https://logveyra.vercel.app/';
-  return `https://logveyra.vercel.app/?token=${encodeURIComponent(t)}`;
+  const baseUrl = (
+    import.meta.env.VITE_DASHBOARD_URL || 'https://logveyra.vercel.app'
+  ).replace(/\/$/, '');
+  if (!t) return baseUrl;
+  return `${baseUrl}/?token=${encodeURIComponent(t)}`;
 }
 
 export async function checkSession(): Promise<User | null> {

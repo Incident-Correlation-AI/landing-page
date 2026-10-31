@@ -37,6 +37,14 @@ export default function DashboardPage() {
     navigate('/login');
   };
 
+  const targetHost = (() => {
+    try {
+      return new URL(dashboardUrl).host;
+    } catch {
+      return 'dashboard';
+    }
+  })();
+
   return (
     <main className="flex min-h-screen items-center px-5 py-16 text-ink">
       <div className="mx-auto w-full max-w-2xl border border-dim bg-bg p-8 font-mono">
@@ -60,14 +68,14 @@ export default function DashboardPage() {
             <p className="mt-1 text-base text-ink">
               &gt; user: <span className="text-accent">{user.username}</span>
             </p>
-            <p className="mt-1 text-sm text-dim">&gt; redirecting to dashboard at https://logveyra.vercel.app/ ...</p>
+            <p className="mt-1 text-sm text-dim">&gt; redirecting to dashboard at {targetHost} ...</p>
           </div>
           <div>
             <a
               href={dashboardUrl}
               className="inline-flex h-11 items-center justify-center border border-accent bg-accent px-5 text-base font-medium text-on-accent transition-colors duration-150 hover:bg-accent-hover"
             >
-              [ open logveyra.vercel.app ]
+              [ open {targetHost} ]
             </a>
           </div>
         </div>
