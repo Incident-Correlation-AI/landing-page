@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './AuthContext'
 import Navbar from './components/Navbar'
+import BusinessSection from './components/BusinessSection'
 import { FinalCta, Footer, Hero, HowItWorks, NotDoing, Principles, Problem, WhyItMatters } from './components/Sections'
 import LoginPage from './LoginPage'
 import DashboardPage from './DashboardPage'
@@ -39,6 +40,7 @@ function Landing() {
         <Problem />
         <WhyItMatters />
         <HowItWorks />
+        <BusinessSection />
         <Principles />
         <NotDoing />
         <FinalCta />

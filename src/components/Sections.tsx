@@ -79,7 +79,7 @@ export function Hero() {
 
 /* ------------------------------------------------------------------ section rule */
 
-function Rule() {
+export function Rule() {
   return <hr className="border-t border-dim mx-auto max-w-6xl" />
 }
 
